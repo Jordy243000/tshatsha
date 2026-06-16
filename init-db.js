@@ -2,6 +2,9 @@ import mysql from 'mysql2/promise';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,8 +14,10 @@ const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 3306,
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'AAFRIQUE243@jordy',
+  password: process.env.DB_PASSWORD || '',
 };
+
+const dbName = process.env.DB_NAME || 'TshaTshaStream_db';
 
 async function initDatabase() {
   let connection;
@@ -23,12 +28,12 @@ async function initDatabase() {
     
     console.log('✅ Connected to MySQL server');
     
-    // Create database if not exists
-    await connection.query('CREATE DATABASE IF NOT EXISTS TshaTshaStream_db');
-    console.log('✅ Database TshaTshaStream_db created or already exists');
+    // Create database if not exists (RDS : la base existe souvent déjà)
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
+    console.log(`✅ Database ${dbName} created or already exists`);
     
     // Use the database
-    await connection.query('USE TshaTshaStream_db');
+    await connection.query(`USE \`${dbName}\``);
     
     // Read and execute schema
     const schemaPath = path.join(__dirname, 'database', 'schema.sql');
@@ -135,7 +140,7 @@ async function initDatabase() {
       });
     }
     
-    console.log('\n✅ Database TshaTshaStream_db is ready!');
+    console.log(`\n✅ Database ${dbName} is ready!`);
     
   } catch (error) {
     console.error('❌ Error initializing database:', error.message);
