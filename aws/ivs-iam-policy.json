@@ -1,0 +1,21 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "TshaTshaStreamLiveIVS",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateChannel",
+        "ivs:DeleteChannel",
+        "ivs:GetChannel",
+        "ivs:GetStream",
+        "ivs:CreateStreamKey",
+        "ivs:DeleteStreamKey",
+        "ivs:ListStreamKeys",
+        "ivs:ListChannels",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
